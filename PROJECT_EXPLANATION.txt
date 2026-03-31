@@ -1,0 +1,215 @@
+================================================================================
+                    SPENDWISE - PROJECT EXPLANATION
+           Expense Tracker & Budget Management System
+================================================================================
+
+OVERVIEW
+--------
+SpendWise is a comprehensive expense tracking and budget management application 
+designed to help users monitor their financial health. The system provides tools 
+for recording expenses, setting budget goals, and visualizing spending patterns 
+through interactive charts and analytics.
+
+
+ARCHITECTURE
+------------
+The application follows a component-based architecture using React with Next.js 
+as the framework. State management is handled through a custom store implementation 
+using React's useSyncExternalStore hook, providing reactive updates across all 
+components without external dependencies.
+
+Key architectural decisions:
+- Client-side state management for demo purposes (easily replaceable with database)
+- Component composition pattern for reusable UI elements
+- Separation of concerns between views, forms, and data logic
+- Responsive design with mobile-first approach
+
+
+CORE COMPONENTS
+---------------
+
+1. App Shell (components/app-shell.tsx)
+   - Main layout wrapper with sidebar navigation
+   - Handles responsive behavior (sidebar on desktop, hamburger on mobile)
+   - Contains month selector and add expense button in header
+
+2. Dashboard View (components/dashboard-view.tsx)
+   - Primary landing view showing financial overview
+   - Displays stat cards with key metrics
+   - Shows recent transactions and budget progress summary
+   - Includes category breakdown donut chart
+
+3. Expense List (components/expense-list.tsx)
+   - Tabular display of all expenses for selected month
+   - Search functionality by description
+   - Category filtering with dropdown
+   - Sorting by date or amount
+   - Edit and delete actions for each expense
+
+4. Expense Form (components/expense-form.tsx)
+   - Modal dialog for adding/editing expenses
+   - Form validation for required fields
+   - Category selection with icons
+   - Date picker for expense date
+
+5. Budget Manager (components/budget-manager.tsx)
+   - List of budget goals with progress bars
+   - Visual status indicators (under budget, warning, over budget)
+   - Inline edit and delete functionality
+   - Form to add new budget goals
+
+6. Analytics View (components/analytics-view.tsx)
+   - Three chart types: Budget vs Actual, Daily Spending, Monthly Trends
+   - Interactive charts using Recharts library
+   - Custom tooltips with formatted data
+
+7. Budget Alerts (components/budget-alerts.tsx)
+   - Warning banners when approaching budget limit (80%)
+   - Critical alerts when budget is exceeded
+   - Displays affected categories with amounts
+
+8. Stat Cards (components/stat-cards.tsx)
+   - Key performance indicator cards
+   - Shows total spent, budget, remaining balance
+   - Month-over-month percentage change indicators
+
+
+DATA LAYER
+----------
+
+The store (lib/store.ts) manages all application state:
+
+State Structure:
+- expenses: Array of expense records
+- budgets: Array of budget goals
+- selectedMonth: Currently selected month (YYYY-MM format)
+
+Actions:
+- addExpense(expense): Add new expense record
+- updateExpense(id, updates): Modify existing expense
+- deleteExpense(id): Remove expense by ID
+- setBudget(budget): Create or update budget goal
+- deleteBudget(id): Remove budget by ID
+- setSelectedMonth(month): Change selected month
+
+Selectors:
+- getExpensesForMonth(month): Filter expenses by month
+- getBudgetsForMonth(month): Filter budgets by month
+- getSpendingByCategory(month): Aggregate spending per category
+- getCategoryTotals(month): Get totals with budget comparison
+
+
+USER FLOWS
+----------
+
+1. Recording an Expense
+   User clicks "Add Expense" -> Form dialog opens -> User enters details ->
+   Clicks submit -> Expense saved to store -> Toast notification shown ->
+   Dashboard updates with new data
+
+2. Setting a Budget Goal
+   User navigates to Budgets tab -> Selects category from dropdown ->
+   Enters budget amount -> Clicks "Set Budget" -> Budget saved ->
+   Progress bar appears in list -> Dashboard budget card updates
+
+3. Viewing Analytics
+   User navigates to Analytics tab -> Selects chart type (tabs) ->
+   Charts render with current month data -> User can change month ->
+   Charts update to show historical data
+
+4. Editing an Expense
+   User clicks edit icon on expense row -> Edit dialog opens with prefilled data ->
+   User modifies fields -> Clicks "Save Changes" -> Expense updated ->
+   All views reflect changes
+
+5. Monitoring Budget Status
+   System automatically calculates spending vs budget ->
+   Progress bars update in real-time -> Warning banners appear at 80% ->
+   Critical alerts shown when over budget -> Status colors change accordingly
+
+
+DESIGN SYSTEM
+-------------
+
+Color Palette:
+- Background: Deep navy/slate (#1a1a2e equivalent in oklch)
+- Cards: Slightly lighter navy
+- Primary: Emerald green for positive actions and success states
+- Destructive: Red-orange for delete actions and warnings
+- Warning: Amber/yellow for budget warnings
+- Text: Off-white for primary, muted gray for secondary
+
+Typography:
+- Font Family: Inter (sans-serif) for UI, JetBrains Mono for numbers
+- Headings: Bold weights, larger sizes
+- Body: Regular weight, optimized line height
+
+Spacing:
+- Consistent 4px grid system
+- Component padding: 16-24px
+- Gap between elements: 8-16px
+
+Components:
+- Rounded corners (0.625rem radius)
+- Subtle borders for separation
+- Soft shadows on elevated elements
+- Consistent icon sizing (16-20px)
+
+
+RESPONSIVENESS
+--------------
+
+Breakpoints:
+- Mobile: < 768px (single column, hamburger menu)
+- Tablet: 768px - 1024px (adjusted spacing, collapsible sidebar)
+- Desktop: > 1024px (full sidebar, multi-column layouts)
+
+Mobile Adaptations:
+- Sidebar becomes slide-out drawer
+- Stat cards stack vertically
+- Tables become card-based lists
+- Charts resize to fit viewport
+- Touch-friendly tap targets
+
+
+SECURITY CONSIDERATIONS
+-----------------------
+
+For production deployment, implement:
+- User authentication (session-based or JWT)
+- Server-side data validation
+- Database storage (PostgreSQL, Supabase, etc.)
+- Row-level security for multi-user support
+- HTTPS encryption
+- Input sanitization
+- Rate limiting on API endpoints
+
+
+FUTURE ENHANCEMENTS
+-------------------
+
+Potential features for expansion:
+- Recurring expenses automation
+- Receipt image upload and OCR
+- Multi-currency support
+- Export to CSV/PDF
+- Budget rollover between months
+- Spending insights and recommendations
+- Bill reminders and notifications
+- Shared budgets for families/teams
+- Bank account integration
+- Machine learning categorization
+
+
+DEPLOYMENT
+----------
+
+The application is ready for deployment on Vercel:
+1. Connect GitHub repository
+2. Configure environment variables (if using database)
+3. Deploy with automatic CI/CD
+
+For production, replace the client-side store with a database backend
+(recommended: Supabase, Neon, or PlanetScale).
+
+================================================================================
